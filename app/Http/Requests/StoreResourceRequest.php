@@ -22,7 +22,18 @@ class StoreResourceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required',
+            'content' => 'required',
+            'resourceFile' => 'required|mimes:pdf,doc,docs,xlx,ppt,pptx',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+
+        $this->merge([
+            'user_id' => $this->userId,
+            'resourceFile' => $this->resourceFile
+        ]);
     }
 }

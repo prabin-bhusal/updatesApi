@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateResourceRequest extends FormRequest
 {
@@ -21,8 +22,32 @@ class UpdateResourceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $method = $this->method();
+
+        if ($method == "PUT") {
+            return [
+                'title' => 'required',
+                'content' => 'required',
+                'resourceFile' => 'required|mimes:pdf,doc,docs,xlx,ppt,pptx', //TODO: make this required
+                'userId' => 'required|integer',
+            ];
+        } else {
+            return [
+                'title' => 'sometimes|required',
+                'content' => 'sometimes|required',
+                'resourceFile' => 'sometimes|required|mimes:pdf,doc,docs,xlx,ppt,pptx',
+                'userId' => 'sometimes|required|integer',
+            ];
+        }
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->userId) {
+            $this->merge([
+                'user_id' => $this->userId,
+                'resource_file' => $this->resourceFile
+            ]);
+        }
     }
 }

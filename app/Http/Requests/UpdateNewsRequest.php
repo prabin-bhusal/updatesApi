@@ -30,7 +30,7 @@ class UpdateNewsRequest extends FormRequest
             return [
                 'title' => 'required',
                 'content' => 'required',
-                'banner_image' => 'required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
+                'bannerImage' => 'required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
                 'slug' => ['required', 'unique:news,slug'],
                 'userId' => 'required|integer',
                 'status' => ['required', Rule::in(['published', 'unpublished', 'draft'])]
@@ -39,7 +39,7 @@ class UpdateNewsRequest extends FormRequest
             return [
                 'title' => 'sometimes|required',
                 'content' => 'sometimes|required',
-                'banner_image' => 'sometimes|required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
+                'bannerImage' => 'sometimes|required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
                 'slug' => ['sometimes', 'required', 'unique:news,slug'],
                 'userId' => 'sometimes|required|integer',
                 'status' => ['sometimes', 'required', Rule::in(['published', 'unpublished', 'draft'])]
@@ -51,7 +51,8 @@ class UpdateNewsRequest extends FormRequest
     {
         if ($this->userId) {
             $this->merge([
-                'user_id' => $this->userId
+                'user_id' => $this->userId,
+                'banner_image' => $this->bannerImage
             ]);
         }
     }

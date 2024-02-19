@@ -35,14 +35,17 @@ Route::post('admin/login', [UserAuthController::class, 'adminLogin']);
  */
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
-    Route::get("/getNews", [NewsController::class, 'index']);
-    Route::get("/getNews/{news}",  [NewsController::class, 'show']);
-    Route::apiResource('resources', ResourceController::class)->only(['index', 'show']);
+    Route::get("getNews", [NewsController::class, 'index']);
+    Route::get("getNews/{news}",  [NewsController::class, 'show']);
+    Route::get("getResource", [ResourceController::class, 'index']);
+    Route::get("getResource/{resource}", [ResourceController::class, 'show']);
 });
+
 
 /**
  * Route For Admins
  */
 Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'can:isAdmin'], function () {
     Route::apiResource('news', NewsController::class);
+    Route::apiResource("resource", ResourceController::class);
 });

@@ -7,6 +7,7 @@ use App\Models\Resource;
 use App\Repositories\ResourceRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class ResourceRepository implements ResourceRepositoryInterface
@@ -26,14 +27,19 @@ class ResourceRepository implements ResourceRepositoryInterface
 
     public function storeResource(Request $request)
     {
-        $file = $request->file('resourceFile');
-        $filename = uniqid() . "_" . $file->getClientOriginalName();
-        $file->move(public_path('public/files'), $filename);
-        $url = $filename;
+        if ($request->has('resourceFile')) {
+            $file = $request->file('resourceFile');
+            $name = $file->getClientOriginalName();
+            $name = substr($name, 0, strpos($name, '.'));
+            $extension = $file->getClientOriginalExtension();
+            $filename = $name . time() . '.' . $extension;
+            $path = public_path("storage/") . "files/";
+            $file->move($path, $filename);
+        }
         $formdata = [
             'title' => $request->title,
             'content' => $request->content,
-            'resource_file' => $url,
+            'resource_file' => $filename,
             'user_id' => auth('sanctum')->user()->id
         ];
         $data = News::create($formdata);
@@ -54,6 +60,27 @@ class ResourceRepository implements ResourceRepositoryInterface
 
     public function updateResource(Request $request, Resource $resource)
     {
+        if ($request->hasFile('resourceFile')) {
+            $file = $request->file('resourceFile');
+            $name = $file->getClientOriginalName();
+            $name = substr($name, 0, strpos($name, '.'));
+            $extension = $file->getClientOriginalExtension();
+            $filename = $name . time() . '.' . $extension;
+            $path = public_path("storage/") . "files/";
+            $file->move($path, $filename);
+            Storage::delete("public/files/" . $resource->resource_file);
+
+            $resource->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'resource_file' => $filename,
+            ]);
+        } else {
+            $resource->update([
+                'title' => $request->title,
+                'content' => $request->content,
+            ]);
+        }
         return $resource->update($request->all());
     }
 

@@ -10,6 +10,7 @@ class ResourceResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        // dd(new UserResource($this->whenLoaded('user')));
         return [
             'id' => $this->id,
             'title' => $this->title,
