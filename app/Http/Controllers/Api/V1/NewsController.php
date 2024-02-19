@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Filters\V1\NewsFilter;
 use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\Models\News;
@@ -11,8 +10,8 @@ use App\Http\Resources\V1\NewsCollection;
 use App\Http\Resources\V1\NewsResource;
 use App\Repositories\NewsRepositoryInterface;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class NewsController extends Controller
 {
@@ -32,6 +31,7 @@ class NewsController extends Controller
      * /api/v1/news (if logged in)
      * /api/v1/test (for testing purpose)
      */
+
     public function index(Request $request)
     {
 
@@ -43,13 +43,15 @@ class NewsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * TODO: image upload left to do
      * URL: /api/v1/news
      * Method: POST
      * Body: title, slug, content, banner_image, status
      */
     public function store(StoreNewsRequest $request)
     {
+        if (!Gate::allows('isAdmin')) {
+            abort(403, 'Not Authorized');
+        }
 
         $data = $this->newsRepository->storeNews($request);
 
@@ -81,6 +83,7 @@ class NewsController extends Controller
      */
     public function update(UpdateNewsRequest $request, News $news)
     {
+        $this->authorize('update', $news);
         $data = $this->newsRepository->updateNews($request, $news);
 
         if ($data) {
@@ -102,6 +105,7 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         // dd($news);
+        $this->authorize('delete', $news);
         try {
             $deleted = $this->newsRepository->deleteNews($news);
 

@@ -26,7 +26,7 @@ class NewsFactory extends Factory
             'title' => rtrim($title, '.'),
             'slug' => $slug,
             'content' => fake()->paragraph(5),
-            'banner_image' => 'images/default.jpg',
+            'banner_image' => 'default.jpg',
             'user_id' => User::factory(),
             'status' => $status,
         ];

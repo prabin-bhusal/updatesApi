@@ -5,16 +5,27 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
+use App\Http\Resources\V1\ResourceCollection;
 use App\Models\Resource;
+use App\Repositories\ResourceRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ResourceController extends Controller
 {
+
+    private ResourceRepositoryInterface $resourceRepository;
+
+    public function __construct(ResourceRepositoryInterface $resourceRepository)
+    {
+        $this->resourceRepository = $resourceRepository;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        return new ResourceCollection($this->resourceRepository->getAllResources($request));
     }
 
     /**

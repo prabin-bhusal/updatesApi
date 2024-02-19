@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class ResourceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->paragraph(1),
+            'content' => fake()->paragraph(5),
+            'resource_file' => 'download.pdf',
+            'user_id' => User::factory()
         ];
     }
 }

@@ -25,11 +25,7 @@ class NewsPolicy
      */
     public function view(User $user, News $news)
     {
-        if ($user) {
-            return true;
-        } else {
-            return false;
-        }
+        return $user->id == $news->user_id;
     }
 
     /**
@@ -46,6 +42,7 @@ class NewsPolicy
     public function update(User $user, News $news)
     {
         //
+        return $user->id == $news->user_id;
     }
 
     /**
@@ -54,6 +51,7 @@ class NewsPolicy
     public function delete(User $user, News $news)
     {
         //
+        return $user->id == $news->user_id;
     }
 
     /**
