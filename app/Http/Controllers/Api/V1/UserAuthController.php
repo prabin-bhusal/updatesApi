@@ -59,6 +59,14 @@ class UserAuthController extends Controller
         $token = $user->createToken('admin-token', ['create', 'update', 'delete'])->plainTextToken;
         return response()->json([
             'access_token' => $token,
-        ]);
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'message' => "Successfully logged out."
+        ], 200);
     }
 }

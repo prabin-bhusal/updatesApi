@@ -30,7 +30,7 @@ class UpdateNewsRequest extends FormRequest
             return [
                 'title' => 'required',
                 'content' => 'required',
-                'banner_image' => 'required', //TODO: make this required
+                'banner_image' => 'required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
                 'slug' => ['required', 'unique:news,slug'],
                 'userId' => 'required|integer',
                 'status' => ['required', Rule::in(['published', 'unpublished', 'draft'])]
@@ -39,7 +39,7 @@ class UpdateNewsRequest extends FormRequest
             return [
                 'title' => 'sometimes|required',
                 'content' => 'sometimes|required',
-                'banner_image' => 'sometimes|required', //TODO: make this required
+                'banner_image' => 'sometimes|required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
                 'slug' => ['sometimes', 'required', 'unique:news,slug'],
                 'userId' => 'sometimes|required|integer',
                 'status' => ['sometimes', 'required', Rule::in(['published', 'unpublished', 'draft'])]

@@ -28,7 +28,7 @@ class StoreNewsRequest extends FormRequest
         return [
             'title' => 'required',
             'content' => 'required',
-            'banner_image' => 'nullable', //TODO: make this required
+            'bannerImage' => 'required|mimes:png,jpg,jpeg,gif,webp', //TODO: make this required
             'slug' => ['required', 'unique:news,slug'],
             'status' => ['required', Rule::in(['published', 'unpublished', 'draft'])]
         ];
@@ -38,7 +38,8 @@ class StoreNewsRequest extends FormRequest
     {
 
         $this->merge([
-            'user_id' => $this->userId
+            'user_id' => $this->userId,
+            'banner_image' => $this->bannerImage
         ]);
     }
 }
