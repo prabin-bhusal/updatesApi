@@ -19,11 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://localhost:5173'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => [':authority:', ':method:', ':path:', ':scheme:'], // this is the line i needed to update to solve the issue.
+    'allowed_headers' => ['Content-Type, X-Auth-Token, Authorization, Origin'], // this is the line i needed to update to solve the issue.
 
     'exposed_headers' => [],
 
