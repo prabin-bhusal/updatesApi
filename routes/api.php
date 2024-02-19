@@ -31,20 +31,20 @@ Route::post('login', [UserAuthController::class, 'login']);
 Route::post('admin/login', [UserAuthController::class, 'adminLogin']);
 
 
-// Route::get("v1/test", [NewsController::class, 'index']);
 
 /**
  * Route For Guest Users
  */
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
-    Route::apiResource('getNews', NewsController::class)->only(['index', 'show']);
+    Route::get("/getNews", [NewsController::class, 'index']);
+    Route::get("/getNews/{news}",  [NewsController::class, 'show']);
     Route::apiResource('resources', ResourceController::class)->only(['index', 'show']);
 });
 
 /**
  * Route For Admins
  */
-Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'can:isAdmin'], function () {
     Route::apiResource('news', NewsController::class);
 });

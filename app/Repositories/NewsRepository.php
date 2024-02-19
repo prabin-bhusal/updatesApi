@@ -38,10 +38,8 @@ class NewsRepository implements NewsRepositoryInterface
             $name = substr($name, 0, strpos($name, '.'));
             $extension = $file->getClientOriginalExtension();
             $filename = $name . time() . '.' . $extension;
-            // $path = public_path("storage/") . "images/";
-            // $file->move($path, $filename);
-
-            Storage::disk('public')->put('images', $file);
+            $path = public_path("storage/") . "images/";
+            $file->move($path, $filename);
         }
         $formdata = [
             'title' => $request->title,
@@ -58,6 +56,7 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function showNews(News $news)
     {
+
         $includeUser = request()->query('includeUser'); // ?includeUser=true
 
         if ($includeUser) {

@@ -70,11 +70,11 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+
         $data = $this->newsRepository->showNews($news);
 
         return new NewsResource($data);
     }
-
 
     /**
      * Update the specified resource in storage.
