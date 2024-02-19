@@ -30,8 +30,6 @@ Route::post('logout', [UserAuthController::class, 'logout'])
 Route::post('login', [UserAuthController::class, 'login']);
 Route::post('admin/login', [UserAuthController::class, 'adminLogin']);
 
-
-
 /**
  * Route For Guest Users
  */

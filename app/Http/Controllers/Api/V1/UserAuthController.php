@@ -39,6 +39,9 @@ class UserAuthController extends Controller
         $token = $user->createToken('user-token', ['none'])->plainTextToken;
         return response()->json([
             'access_token' => $token,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role
         ]);
     }
 
@@ -59,6 +62,9 @@ class UserAuthController extends Controller
         $token = $user->createToken('admin-token', ['create', 'update', 'delete'])->plainTextToken;
         return response()->json([
             'access_token' => $token,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role
         ], 200);
     }
 
