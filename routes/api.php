@@ -45,7 +45,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 /**
  * Route For Admins
  */
-Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'can:isAdmin'], function () {
+Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('news', NewsController::class);
     Route::apiResource("resource", ResourceController::class);
 });
