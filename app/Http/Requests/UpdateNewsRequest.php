@@ -25,6 +25,7 @@ class UpdateNewsRequest extends FormRequest
     public function rules(): array
     {
         $method = $this->method();
+        dd($this->all());
 
         if ($method == "PUT") {
             return [
