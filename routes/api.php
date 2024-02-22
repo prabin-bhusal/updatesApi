@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\NewsController;
+use App\Http\Controllers\Api\V1\NoticeController;
 use App\Http\Controllers\Api\V1\ResourceController;
 use App\Http\Controllers\Api\V1\UserAuthController;
 use Illuminate\Http\Request;
@@ -39,13 +40,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::get("getNews/{news}",  [NewsController::class, 'show']);
     Route::get("getResource", [ResourceController::class, 'index']);
     Route::get("getResource/{resource}", [ResourceController::class, 'show']);
+    Route::get("getNotices", [NoticeController::class, 'index']);
+    Route::get("getNotice/{notice}", [NoticeController::class, 'show']);
 });
 
 
 /**
  * Route For Admins
  */
-Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'can:isAdmin'], function () {
+Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('news', NewsController::class);
     Route::apiResource("resource", ResourceController::class);
+    Route::apiResource("notices", NoticeController::class);
 });

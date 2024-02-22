@@ -14,11 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        User::factory()
-            ->count(1)
-            ->hasNews(25)
-            ->hasResources(10)
-            ->create();
+        $this->call([
+            UserSeeder::class,
+            // NoticeSeeder::class,
+        ]);
     }
 }

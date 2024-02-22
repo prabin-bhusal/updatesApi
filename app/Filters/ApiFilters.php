@@ -33,6 +33,10 @@ class ApiFilters
             $column = $this->columnMap[$parm] ?? $parm;
             foreach ($operators as $operator) {
                 if (isset($query[$operator])) {
+                    if ($operator == 'like') {
+                        $query[$operator] = '%' . $query[$operator] . '%';
+                    }
+
                     $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]];
                 }
             }

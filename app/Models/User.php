@@ -54,4 +54,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Resource::class);
     }
+
+    /**
+     * Get the notices belonging to the User(admin)
+     */
+    public function notices()
+    {
+        return $this->hasMany(Notice::class);
+    }
 }
