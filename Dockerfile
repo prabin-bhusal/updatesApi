@@ -25,6 +25,17 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+# RUN chown -R www-data:www-data /var/www
+
 WORKDIR /var/www
+
+# Change the group for storage directory to root
+RUN mkdir -p storage && chgrp -R root storage
+
+# Change the owner for the vendor directory to the specified user
+RUN mkdir -p vendor && chown -R $user:$user vendor
+
+RUN mkdir -p bootstrap/cache && chown -R $user:$user bootstrap/cache
+
 
 USER $user

@@ -68,7 +68,10 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function updateNews(Request $request, News $news)
     {
+        // dd($request);
+        // dd($request->bannerImage);
         if ($request->hasFile('bannerImage')) {
+            dd("hello");
             $file = $request->file('bannerImage');
             $name = $file->getClientOriginalName();
             $name = substr($name, 0, strpos($name, '.'));
