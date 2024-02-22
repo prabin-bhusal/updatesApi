@@ -6,6 +6,7 @@ use App\Models\Notice;
 use App\Filters\V1\NoticeFilter;
 use App\Repositories\NoticeRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class NoticeRepository implements NoticeRepositoryInterface
@@ -28,6 +29,10 @@ class NoticeRepository implements NoticeRepositoryInterface
 
     public function storeNotice($request)
     {
+        if (!Gate::allows('isAdmin')) {
+            abort(403, 'Not Authorized');
+        }
+
         $notice = DB::transaction(function () use ($request) {
             if ($request->has('banner')) {
                 $file = $request->file('banner');
@@ -55,6 +60,10 @@ class NoticeRepository implements NoticeRepositoryInterface
 
     public function updateNotice($request, $notice)
     {
+        if (!Gate::allows('isAdmin')) {
+            abort(403, 'Not Authorized');
+        }
+
         $updatedNotice = DB::transaction(function () use ($request, $notice) {
             $params = [
                 'title' => $request->title,
@@ -84,6 +93,10 @@ class NoticeRepository implements NoticeRepositoryInterface
 
     public function destroyNotice($notice)
     {
+        if (!Gate::allows('isAdmin')) {
+            abort(403, 'Not Authorized');
+        }
+
         Storage::delete("public/images/" . $notice->banner);
         Storage::delete("public/files/" . $notice->attached_file);
         return $notice->delete();
