@@ -25,7 +25,10 @@ class NewsResource extends JsonResource
             'status' => $this->status,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'comments' => new CommentCollection($this->whenLoaded('comments')),
             'user' => new UserResource($this->whenLoaded('user'))
         ];
     }
 }
+
+// TODO: comments fetch not working with news

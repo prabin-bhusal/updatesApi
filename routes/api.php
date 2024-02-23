@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\CommentController;
 use App\Http\Controllers\Api\V1\NewsController;
 use App\Http\Controllers\Api\V1\NoticeController;
 use App\Http\Controllers\Api\V1\ResourceController;
@@ -52,4 +53,8 @@ Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V
     Route::apiResource('news', NewsController::class);
     Route::apiResource("resource", ResourceController::class);
     Route::apiResource("notices", NoticeController::class);
+});
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'auth:sanctum'], function () {
+    Route::apiResource("comments", CommentController::class);
 });
