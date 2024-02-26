@@ -25,8 +25,10 @@ class UserFactory extends Factory
     {
         $role = $this->faker->randomElement(['admin', 'user']);
         return [
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
+            // 'name' => 'admin',
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            // 'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

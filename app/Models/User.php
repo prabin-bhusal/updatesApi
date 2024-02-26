@@ -62,4 +62,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notice::class);
     }
+
+    /**
+     * Get the events belonging to the User(admin)
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    /**
+     * Get the events that the user is booked for
+     */
+    public function eventsBooked()
+    {
+        return $this->belongsToMany(Event::class);
+    }
 }

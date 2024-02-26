@@ -18,7 +18,7 @@ class NoticeRepository implements NoticeRepositoryInterface
 
         $includeUserData = $request->query('includeUser');
 
-        $notices = Notice::where($queryItems);
+        $notices = Notice::where($queryItems)->orderBy('date', 'desc');
 
         if ($includeUserData) {
             $notices = $notices->with('user');

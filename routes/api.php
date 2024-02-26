@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\NewsController;
 use App\Http\Controllers\Api\V1\NoticeController;
 use App\Http\Controllers\Api\V1\ResourceController;
 use App\Http\Controllers\Api\V1\UserAuthController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::get("getResource/{resource}", [ResourceController::class, 'show']);
     Route::get("getNotices", [NoticeController::class, 'index']);
     Route::get("getNotice/{notice}", [NoticeController::class, 'show']);
+    Route::get("getEvents", [EventController::class, 'index']);
+    Route::get("getEvent/{event}", [EventController::class, 'show']);
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('events/{event}/book', [EventController::class, 'book']);
+        Route::post('events/{event}/unbook', [EventController::class, 'unbook']);
+    });
 });
 
 
@@ -52,4 +60,5 @@ Route::group(['prefix' => 'v1/admin', 'namespace' => 'App\Http\Controllers\Api\V
     Route::apiResource('news', NewsController::class);
     Route::apiResource("resource", ResourceController::class);
     Route::apiResource("notices", NoticeController::class);
+    Route::apiResource("events", EventController::class);
 });
