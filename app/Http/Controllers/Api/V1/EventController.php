@@ -10,6 +10,11 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\V1\EventCollection;
 use App\Http\Resources\V1\EventResource;
+use App\Mail\EventBookedMail;
+use App\Mail\EventUnbookedMail;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -79,6 +84,15 @@ class EventController extends Controller
      */
     public function book(Event $event)
     {
+        if (Auth::user()->eventsBooked->pluck('id')->contains($event->id)) {
+            return response()->json([
+                'message' => "User already booked"
+            ], 403);
+        }
+
+        dispatch(function () use ($event) {
+            Mail::to(Auth::user()->email)->send(new EventBookedMail(Auth::user(), $event));
+        })->delay(now()->addSeconds(5));
         $event->users()->attach(auth()->user()->id);
         return new EventResource($event->loadMissing('user')->loadMissing('users'));
     }
@@ -88,7 +102,17 @@ class EventController extends Controller
      */
     public function unbook(Event $event)
     {
-        $event->users()->detach(auth()->user()->id);
-        return new EventResource($event->loadMissing('user')->loadMissing('users'));
+        if (Auth::user()->eventsBooked->pluck('id')->contains($event->id)) {
+            dispatch(function () use ($event) {
+                Mail::to(Auth::user()->email)->send(new EventUnbookedMail(Auth::user(), $event));
+            })->delay(now()->addSeconds(5));
+
+            $event->users()->detach(auth()->user()->id);
+            return new EventResource($event->loadMissing('user')->loadMissing('users'));
+        } else {
+            return response()->json([
+                'message' => "User must be booked to unbook the event"
+            ], 404);
+        }
     }
 }

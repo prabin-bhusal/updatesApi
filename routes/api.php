@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\V1\NoticeController;
 use App\Http\Controllers\Api\V1\ResourceController;
 use App\Http\Controllers\Api\V1\UserAuthController;
 use App\Http\Controllers\Api\V1\EventController;
+use App\Mail\EventBookedMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,7 @@ use App\Http\Controllers\Api\V1\EventController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 
 Route::get('/', function (Request $request) {
     return response()->json([
