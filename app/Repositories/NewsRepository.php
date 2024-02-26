@@ -8,7 +8,6 @@ use App\Repositories\NewsRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -26,6 +25,9 @@ class NewsRepository implements NewsRepositoryInterface
         if ($includeUser) {
             $news = $news->with('user');
         }
+        $news = $news->with(['comments' => function ($query) {
+            $query->with('replies');
+        }]);
 
         return $news;
     }
@@ -56,19 +58,19 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function showNews(News $news)
     {
-
         $includeUser = request()->query('includeUser'); // ?includeUser=true
 
         if ($includeUser) {
             return $news->loadMissing('user');
         }
-
+        $news = $news->loadMissing(['comments.user', 'comments.replies.user']);
         return $news;
     }
 
     public function updateNews(Request $request, News $news)
     {
         if ($request->hasFile('bannerImage')) {
+            dd("hello");
             $file = $request->file('bannerImage');
             $name = $file->getClientOriginalName();
             $name = substr($name, 0, strpos($name, '.'));
@@ -93,7 +95,7 @@ class NewsRepository implements NewsRepositoryInterface
                 'status' => $request->status
             ]);
         }
-        return $news->update($request->all());
+        return $news;
     }
 
     public function deleteNews(News $news)

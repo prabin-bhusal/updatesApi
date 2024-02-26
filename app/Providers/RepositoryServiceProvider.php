@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\CommentRepository;
+use App\Repositories\CommentRepositoryInterface;
 use App\Repositories\NewsRepository;
 use App\Repositories\NewsRepositoryInterface;
 use App\Repositories\NoticeRepository;
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(NewsRepositoryInterface::class, NewsRepository::class);
         $this->app->bind(ResourceRepositoryInterface::class, ResourceRepository::class);
         $this->app->bind(NoticeRepositoryInterface::class, NoticeRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
     }
 
     /**

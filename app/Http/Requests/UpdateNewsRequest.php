@@ -26,6 +26,7 @@ class UpdateNewsRequest extends FormRequest
     {
         $method = $this->method();
 
+
         if ($method == "PUT") {
             return [
                 'title' => 'required',

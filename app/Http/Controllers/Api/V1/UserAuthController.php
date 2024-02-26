@@ -47,6 +47,7 @@ class UserAuthController extends Controller
 
     public function adminLogin(Request $request)
     {
+        // dd($request);
         $loginUserData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|min:8'
